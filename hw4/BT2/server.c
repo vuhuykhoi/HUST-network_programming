@@ -16,7 +16,8 @@
 #define serverfolderURL "sf/"
 
 
-int myStringCopy(char *str1,char *str2){
+int myStringCopy(char *str1,char *str2)
+{
 	int  i = 0;
 	for(i = 0;i< strlen(str2);i++){
 		str1[i] = str2[i];
@@ -25,7 +26,8 @@ int myStringCopy(char *str1,char *str2){
 	return i;
 }
 
-int main(int argc , char* argv[]){
+int main(int argc , char* argv[])
+{
 	int listen_sock, conn_sock; /* file descriptors */
 	char recv_data[BUFF_SIZE+1],send_data[BUFF_SIZE+1];
 	int bytes_sent, bytes_received;
@@ -62,8 +64,8 @@ int main(int argc , char* argv[]){
 
 
 	//Step 4: Communicate with client
-	while(1){
-
+	while(1)
+	{
 		//accept request
 		sin_size = sizeof(struct sockaddr_in);
 		if ((conn_sock = accept(listen_sock,( struct sockaddr *)&client, &sin_size)) == -1) 
@@ -103,8 +105,9 @@ int main(int argc , char* argv[]){
 			bzero(recv_data,BUFF_SIZE);
 
 			//receive file content
-			while((bytes_received = recv(conn_sock, recv_data,BUFF_SIZE, 0)) >= 0 ){	
-				if (bytes_received == 0){
+			while(1){	
+				bytes_received = recv(conn_sock, recv_data,BUFF_SIZE, 0);
+				if (bytes_received <= 0){
 					break;
 				}
 				/////////////////////////////////////////////////////////

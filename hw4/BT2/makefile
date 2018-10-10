@@ -7,3 +7,4 @@ client:
 	gcc -o client client.c filehelper.c result_msg.c
 clean:
 	rm -f server client
+	rm -rf sf/*
