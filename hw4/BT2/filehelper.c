@@ -1,7 +1,7 @@
 #include "filehelper.h"
 
 //-------------------------------------------------------------
-
+//return file name from file URL link!
 char *getFileName(char *fURL){
 	int idx = 0;
 	for(int i =strlen(fURL);i>=0 ;i--){
@@ -16,6 +16,7 @@ char *getFileName(char *fURL){
 	return result;
 }
 
+//create a empty file in folder link
 FILE *createEmptyFile(char *fURLin,char *serverfolderURL){
 	char *fname = getFileName(fURLin);
 	char *fURL = (char*)malloc(sizeof(char)*(strlen(fname)+strlen(serverfolderURL)+1)); 
@@ -29,6 +30,9 @@ FILE *createEmptyFile(char *fURLin,char *serverfolderURL){
 	return fout;
 }
 
+//check if file is existed?
+//return 1 if existed
+//return 0 if not existed
 int isExsistedFile(char *fname){
 	FILE *file;
     if (file = fopen(fname, "r")){
@@ -37,8 +41,3 @@ int isExsistedFile(char *fname){
     }
     return 0;
 }
-/*
-int main(int argc , char*argv[1]){
-	makeFile(getFileName(argv[1]),readFile(argv[1]),getSizeOfFile(argv[1]));
-	return 0;
-}*/

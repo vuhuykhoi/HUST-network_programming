@@ -1,16 +1,18 @@
 #include <stdio.h>          /* These are the usual header files */
+#include <string.h>
+#include <stdlib.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
-#include <string.h>
+
 #include <unistd.h>
 #include <ctype.h>
 
 #include "filehelper.h"
-#include "result_msg.h"
 
-#define BACKLOG 2   /* Number of allowed connections */
+
+#define BACKLOG 5   /* Number of allowed connections */
 #define BUFF_SIZE 1024
 
 #define serverfolderURL "sf/"
@@ -90,10 +92,10 @@ int main(int argc , char* argv[])
 				//check 
 			FILE *fout = createEmptyFile(getFileName(recv_data),serverfolderURL);
 			if(fout == NULL){
-				bytes_received = myStringCopy(recv_data,"File is exsisted");
+				bytes_received = myStringCopy(recv_data,"Error: File is existent on server");
 			}
 			else{
-				bytes_received = myStringCopy(recv_data,"Ready to upload");
+				bytes_received = myStringCopy(recv_data,"File is not existetent on server");
 			}
 
 			//send mmsg
@@ -115,16 +117,14 @@ int main(int argc , char* argv[])
 				/////////////////////////////////////////////////////////
 				int write_sz = fwrite(recv_data,sizeof(char),bytes_received,fout);
 				if(write_sz < bytes_received){
-		            exit_error(WRITE_FILE_FAIL);
+		           exit(1);
 		        }	
 				bzero(recv_data,BUFF_SIZE);
 			}
 			if(bytes_received < 0){
-	            exit_error(RECEIVE_FILE_FAIL);
+	            exit(1);
 	        }	
-
-	        printf("Ok received from client!\n");
-			fclose(fout);
+			if(fout) fclose(fout);
 		}
 		close(conn_sock);	
 	}
